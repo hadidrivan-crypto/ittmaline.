@@ -1,80 +1,157 @@
 
-HTML
-<!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Postingan Interaktif - Canva & Komentar</title>
+    <title>Desain & Komentar - Hadid Alfhat</title>
     <style>
-      
         body {
-            background-color: #f4f7f9;
-            display: flex;
-            justify-content: center;
-            padding: 40px 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
             margin: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        /* Area Embed Canva */
+        .canva-embed {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-top: 444.4363%;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .canva-embed iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%; border: none;
+        }
+
+        /* Area Input Komentar */
+        .comment-box {
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+
+        h3 { color: #333; font-size: 1.2rem; }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box; /* Agar padding tidak merusak lebar */
+            font-family: inherit;
+        }
+
+        button {
+            background-color: #0084ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #0066cc;
+        }
+
+        /* Daftar Komentar yang Muncul */
+        #comment-list {
+            margin-top: 20px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .comment-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #0084ff;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .comment-item strong {
+            display: block;
+            color: #0084ff;
+            margin-bottom: 5px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="canva-embed">
-        <iframe src="https://www.canva.com/design/PLAYHOLDER/view?embed" 
-                allowfullscreen="allowfullscreen" allow="fullscreen">
-        </iframe>
+    <div class="container">
+        <div class="canva-embed">
+            <iframe loading="lazy" 
+                src="https://www.canva.com/design/DAG_9KF8qXg/wN4Ej2HHgimiiUvUUMXuIw/view?embed" 
+                allowfullscreen="allowfullscreen">
+            </iframe>
+        </div>
+
+        <div class="comment-box">
+            <h3>Tinggalkan Komentar</h3>
+            <input type="text" id="nameInput" placeholder="Nama Anda..." required>
+            <textarea id="textInput" rows="3" placeholder="Tulis komentar di sini..." required></textarea>
+            <button onclick="addComment()">Kirim Komentar</button>
+        </div>
+
+        <ul id="comment-list">
+            </ul>
+        
+        <p style="text-align:center; font-size: 12px; color: #aaa; margin-top: 20px;">
+            Dibuat oleh Hadid Alfhat
+        </p>
     </div>
 
-  
-</div>
+    <script>
+        function addComment() {
+            const name = document.getElementById('nameInput').value;
+            const text = document.getElementById('textInput').value;
+            const list = document.getElementById('comment-list');
 
-<script>
-   
-    window.onload = function() {
-        loadComments();
-    };
+            if (name === "" || text === "") {
+                alert("Mohon isi nama dan komentar Anda!");
+                return;
+            }
 
-    function saveComment() {
-        const name = document.getElementById('nameInput').value;
-        const text = document.getElementById('commentInput').value;
+            // Buat elemen komentar baru
+            const li = document.createElement('li');
+            li.className = 'comment-item';
+            li.innerHTML = `<strong>${name}</strong><span>${text}</span>`;
 
-        if (!name || !text) {
-            alert("Harap isi nama dan komentar ya!");
-            return;
+            // Tambahkan ke daftar (paling atas)
+            list.insertBefore(li, list.firstChild);
+
+            // Bersihkan form setelah kirim
+            document.getElementById('nameInput').value = "";
+            document.getElementById('textInput').value = "";
         }
-
-        const newComment = {
-            id: Date.now(),
-            name: name,
-            text: text
-        };
-
-        
-        const comments = JSON.parse(localStorage.getItem('myComments') || '[]');
-        comments.unshift(newComment); // Tambah ke paling atas
-        localStorage.setItem('myComments', JSON.stringify(comments));
-
-       
-        document.getElementById('nameInput').value = '';
-        document.getElementById('commentInput').value = '';
-        loadComments();
-    }
-
-    function loadComments() {
-        const list = document.getElementById('comment-list');
-        const comments = JSON.parse(localStorage.getItem('myComments') || '[]');
-        
-        list.innerHTML = comments.map(c => `
-            <div class="comment-item">
-                <strong>@${c.name}</strong>
-                <p>${c.text}</p>
-            </div>
-        `).join('');
-    }
-</script>
+    </script>
 
 </body>
 </html>
