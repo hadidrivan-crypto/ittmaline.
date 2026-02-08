@@ -1,80 +1,95 @@
-
-HTML
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Postingan Interaktif - Canva & Komentar</title>
+    <title>Preview Desain Canva - Hadid Alfhat</title>
     <style>
-      
+        /* Reset dasar agar tampilan rapi di semua browser */
         body {
-            background-color: #f4f7f9;
-            display: flex;
-            justify-content: center;
-            padding: 40px 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f4f4; /* Latar belakang abu-abu muda */
             margin: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
-        
+        /* Kontainer utama untuk membatasi lebar agar tidak terlalu lebar di layar besar */
+        .container {
+            width: 100%;
+            max-width: 500px; /* Lebar maksimal seperti tampilan HP */
+            background: white;
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Wrapper khusus untuk embed Canva agar responsif (Aspek Rasio Terjaga) */
+        .canva-embed {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-top: 444.4363%; /* Rasio aspek dari desain Canva asli Anda */
+            padding-bottom: 0;
+            box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16);
+            margin-bottom: 0.9em;
+            overflow: hidden;
+            border-radius: 8px;
+            will-change: transform;
+        }
+
+        .canva-embed iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Styling untuk tombol/link di bawah */
+        .credit-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+
+        .credit-link:hover {
+            background-color: #e0e0e0;
+            color: #000;
+        }
+    </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="canva-embed">
-        <iframe src="https://www.canva.com/design/PLAYHOLDER/view?embed" 
-                allowfullscreen="allowfullscreen" allow="fullscreen">
-        </iframe>
+    <div class="container">
+        <div class="canva-embed">
+            <iframe loading="lazy" 
+                src="https://www.canva.com/design/DAG_9KF8qXg/wN4Ej2HHgimiiUvUUMXuIw/view?embed" 
+                allowfullscreen="allowfullscreen" 
+                allow="fullscreen"
+                title="Desain Canva oleh Hadid Alfhat">
+            </iframe>
+        </div>
+
+        <a href="https://www.canva.com/design/DAG_9KF8qXg/wN4Ej2HHgimiiUvUUMXuIw/view?utm_content=DAG_9KF8qXg&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" 
+           target="_blank" 
+           rel="noopener" 
+           class="credit-link">
+           HOME oleh Hadid Alfhat
+        </a>
     </div>
-
-  
-</div>
-
-<script>
-   
-    window.onload = function() {
-        loadComments();
-    };
-
-    function saveComment() {
-        const name = document.getElementById('nameInput').value;
-        const text = document.getElementById('commentInput').value;
-
-        if (!name || !text) {
-            alert("Harap isi nama dan komentar ya!");
-            return;
-        }
-
-        const newComment = {
-            id: Date.now(),
-            name: name,
-            text: text
-        };
-
-        
-        const comments = JSON.parse(localStorage.getItem('myComments') || '[]');
-        comments.unshift(newComment); // Tambah ke paling atas
-        localStorage.setItem('myComments', JSON.stringify(comments));
-
-       
-        document.getElementById('nameInput').value = '';
-        document.getElementById('commentInput').value = '';
-        loadComments();
-    }
-
-    function loadComments() {
-        const list = document.getElementById('comment-list');
-        const comments = JSON.parse(localStorage.getItem('myComments') || '[]');
-        
-        list.innerHTML = comments.map(c => `
-            <div class="comment-item">
-                <strong>@${c.name}</strong>
-                <p>${c.text}</p>
-            </div>
-        `).join('');
-    }
-</script>
 
 </body>
 </html>
